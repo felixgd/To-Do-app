@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<style>
+	button:hover {
+    opacity: 0.8;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+/*position the close button */
+
+
+.container {
+    padding: 16px;
+	margin-right: 0px;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.1s;
+    animation: animatezoom 0.1s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+    
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+    .cancelbtn {
+       width: 100%;
+    }
+}
+	</style>
+	<link rel="icon" href="public/assets/favicon.ico" type="image/x-icon"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<title>Session</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<center>
+<div class="row">
+<div id="Umenu" style="height: 100%; position: fixed; outline: 1px solid; background: black;" class="col-sm-2">
+	<h1 class="h1C" style="color: white; border-radius: 5px;"><%= username %></h1>
+	<a href="/user/Change_Password" style="text-decoration: none;"><div><p class="pC" style="margin: 5px 5px 10px 10px; color: white; border-radius: 5px;">Change Password</p></div></a>
+	<a href="/user/Change_Email" style="text-decoration: none;"><div><p class="pC" style="margin: 5px 5px 10px 10px; color: white; border-radius: 5px;">Change E-mail</p></div></a>
+</div>
+
+<div id="Panel" class="col-sm-10" style=" left: 15%; width: 75%; padding-left: 10%">
+	<div class="col-sm-10" style="right: 11.5%;">
+			<h1>To-Do App</h1>
+		<div class="row" style="padding-left: 48%;">
+		
+  			<button type="button" class="btn btn-primary" onclick="document.getElementById('zoomadd').style.display='block';" id="create" style="margin-top: 5px; margin-bottom: 5px;"><p style="margin: 5px 5px 10px 10px;">Add</p></button>
+		
+	</div>
+	</div>
+	<div class="row" style="padding-left: 35.5%">
+	<a href="/dashboard/user/log_out"><button class="btn btn-danger" style="margin-top: 5px; margin-bottom: 5px;"><p style="margin: 5px 5px 10px 10px;">Log Out</p></button></a>
+	</div>
+<div class="container" style="width: 90%;">
+	<div class="row" id="Lists" style=" margin-top: 0px; border-top-width: 100px; padding-top: 10%;">
+	<% for(let i = 0; i < lists.length; i++){%>
+		<div class="col-sm-3" style="background-color: rgb(185, 185, 185); border-radius: 1%; margin: 0.2%;">
+		<h3><%=lists[i].listn%></h3>
+		<% for(let j = 0; j < lists[i].tasks.length; j++){%>
+				<form action="/list/update" method="post" class="form-inline">
+				<span>
+					<label style="width: 75%" class="form-check-label"><%= lists[i].tasks[j].content%>
+					<input type="checkbox" class="pull-right position-static" style="vertical-align:top;" onchange="update();" checked="<%= lists[i].tasks[j].status %>">
+					</label>
+				</span>
+		<%}%>
+			<input type="submit" class="btn btn-primary pull-right" name="submit" value="Edit" style="margin-bottom: 2%;">
+				</form>
+		</div>
+	<%}%>		
+	</div>
+</div>
+</div>
+</div>
+<div id="zoomadd" class="modal">
+		<form class="modal-content animate">
+			<div class="container">
+				<div class="row" style="padding: 0.5%">
+					<label for="uname"><b>List Name:</b></label>
+					<input type="text" name="listname" style="margin-right : 2.5%" required id="listname">
+				</div>
+				<div class="row" style="padding: 0.5%">
+					<label for="text"><b>Tasks:</b></label>
+					<input type="text" name="task" id="task" required>
+				</div>
+				<div class="row" style="padding: 0.5%">					
+					<button type="button" class="btn btn-success" id="createlist">Create List</button>
+				</div>
+				<div class="row">
+					<button type="button" onclick="document.getElementById('zoomadd').style.display='none'" class="btn btn-danger">Cancel</button>
+				</div>
+			</div>
+		</form>	  
+</div>
+
+</div>
+
+</center>
+	<script>
+	var modaladd = document.getElementById('zoomadd');
+	var modaledit = document.getElementById('zoomedit');
+	var modaldelete = document.getElementById('zoomdelete');
+
+	window.onclick = function(event) {
+    if (event.target == modaladd) {
+        modal.style.display = "none";
+	}
+	if (event.target == modaledit) {
+        modal.style.display = "none";
+	}
+	if (event.target == modaldelete) {
+        modal.style.display = "none";
+    }
+	}
+	
+		function createlist() {
+			console.log($('#listname').val());
+			var listname= ($('#listname').val());
+			var task =($('#task').val())
+			var data=({
+				'listname': listname, 'task': task
+			});
+            $.ajax({
+			url: "/list/create",
+            type: 'post',
+            timeout: 2000,
+			data: data,
+            success: function(data) {
+                alert('Success!')
+            },
+            error: function(jqXHR, textStatus, err) {
+				alert('text status '+textStatus+', err '+err)
+				console.log();
+            }
+        });
+		}
+		
+		$('#createlist').click(function() {
+			createlist();
+		})
+
+	function update() {
+
+	}
+	</script>
+</body>
+</html>

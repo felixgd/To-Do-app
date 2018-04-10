@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Verification</title>
+</head>
+<body>
+   <center> 
+    <h1>User Verification</h1>
+    <form method="post" action="/verification/:token">
+        <p>Please enter your token: </p><input type="text" name="token" id="token" placeholder="Token"><br>
+        <input type="submit" name="submit" id="submit" value="Send" class="btn btn-success">
+    </form>
+</center>
+    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="Scripts/scripts.js"></script>
+</body>
+</html>

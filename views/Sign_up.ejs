@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<title>Sign Up</title>
+</head>
+<body>
+<center>
+	<h1>Sign Up</h1>
+
+	<form method="post" onsubmit="return (Verify(this) && false);" action="/user/sign_up">
+		<input type="email" name="email" placeholder="E-mail" required style="margin: 5px 5px 5px 5px;"> <br>
+		<input type="text" name="username" placeholder="User" required style="margin: 5px 5px 5px 5px;"> <br>
+		<input type="password" name="password" placeholder="Password" required id="password" style="margin: 5px 5px 5px 5px;"> <br>
+		<input type="password" name="Vpassword" placeholder="Repeat Password" required id="Vpassword" style="margin: 5px 5px 5px 5px;"> <br>
+		<input type="checkbox" name="status" hidden id="status">
+		<input type="submit" name="submit" class="btn btn-success" id="sign_up" value="Sign Up" style="margin: 5px 5px 5px 5px;">
+	</form>
+	<a href="/"><button class="btn btn-primary" id="index" style="margin-top: 5px; margin-bottom: 5px;"><p style="margin: 5px 5px 10px 10px;">Log In</p></button></a>
+
+	
+
+
+</center>
+	<script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="Scripts/scripts.js"></script>
+</body>
+</html>
