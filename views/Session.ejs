@@ -95,7 +95,7 @@ span.psw {
 	</style>
 	<link rel="icon" href="public/assets/favicon.ico" type="image/x-icon"/>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<title>Session</title>
+	<title>Dashboard</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
@@ -122,6 +122,7 @@ span.psw {
 	</div>
 <div class="container" style="width: 90%;">
 	<div class="row" id="Lists" style=" margin-top: 0px; border-top-width: 100px; padding-top: 10%;">
+	<% if(lists){%>
 	<% for(let i = 0; i < lists.length; i++){%>
 		<div class="col-sm-3" style="background-color: rgb(185, 185, 185); border-radius: 1%; margin: 0.2%;">
 		<h3><%=lists[i].listn%></h3>
@@ -129,16 +130,22 @@ span.psw {
 				<form action="/list/update" method="post" class="form-inline">
 				<span>
 					<label style="width: 75%" class="form-check-label"><%= lists[i].tasks[j].content%>
-					<input type="checkbox" class="pull-right position-static" style="vertical-align:top;" onchange="update();" checked="<%= lists[i].tasks[j].status %>">
+					<% if(!lists[i].tasks[j].status){ %>
+					<input type="checkbox" class="pull-right position-static" style="vertical-align:top;" onchange="update(this.id)" id='<%= lists[i].tasks[j].id %>' checked>
+					<% }else{ %>
+					<input type="checkbox" class="pull-right position-static" style="vertical-align:top;" onchange="update(this.id)" id='<%= lists[i].tasks[j].id %>'>
+					<%}%>
 					</label>
 				</span>
 		<%}%>
-			<input type="submit" class="btn btn-primary pull-right" name="submit" value="Edit" style="margin-bottom: 2%;">
+			<input type="submit" class="btn btn-success pull-right" name="submit" value="Edit" onclick="editlist(<%= lists[i].id %>);" style="margin-bottom: 2%;">
+			<input type="submit" class="btn btn-danger pull-left" name="submit" value="Delete" onclick="deletelist(<%= lists[i].id %>);" style="margin-bottom: 2%;">
 				</form>
 		</div>
 	<%}%>		
 	</div>
-</div>
+	<%}%>
+	</div>
 </div>
 </div>
 <div id="zoomadd" class="modal">
@@ -198,8 +205,7 @@ span.psw {
                 alert('Success!')
             },
             error: function(jqXHR, textStatus, err) {
-				alert('text status '+textStatus+', err '+err)
-				console.log();
+				alert('text status '+textStatus+', err '+err);
             }
         });
 		}
@@ -208,9 +214,42 @@ span.psw {
 			createlist();
 		})
 
-	function update() {
+	function update(itask) {
+		console.log(itask);
+		var data= ({
+			taskid: itask
+		});
+		$.ajax({
+			url: "/list/task/update",
+            type: 'post',
+            timeout: 3000,
+			data: data,
+            success: function(data) {
+                alert('Success!')
+            },
+            error: function(jqXHR, textStatus, err) {
+				alert('error timeout');
+				/*if(document.getElementById(itask).checked == true){
+				document.getElementById(itask).checked = false;
+			}else{
+				document.getElementById(itask).checked = true;
+			}*/
+            }
+		});
+	}
+
+	function editlist(ilist){
+
+	
 
 	}
-	</script>
+
+	function deletelist(ilist){
+
+
+
+	}
+
+</script>
 </body>
 </html>

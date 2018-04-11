@@ -1,8 +1,11 @@
 'use strict';
 
-var mongodbPort = 27017;
+var mongodbPort = 41019;
 
-var mongodbHost = "127.0.0.1";
+var mongodbUser = "admin";
+var mongodbPass = "lolxd";
+var mongoAddress = "@ds241019.mlab.com";
+var mongodbHost = mongodbUser + ":" + mongodbPass + mongoAddress;
 
 var config = {
     mongodb: {

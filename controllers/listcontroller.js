@@ -112,6 +112,41 @@ sanitizeBody('task').trim().escape(),
 
 ];
 
+exports.list_controller_task_update_post = function(req,res) {
+
+    console.log(req.body.taskid);
+
+    Task.findOne({_id: req.body.taskid})
+        .exec(function(err, found_task){
+            if(err){return next(err);}
+
+            console.log(found_task);
+            console.log(found_task.status);
+
+        if(!found_task.status){
+            found_task.status = true;
+            found_task.save(function(err, utask){
+                if (err){
+                    console.log('cannot update task');
+                    return res.err;
+                }
+                console.log(utask.status);
+            return res.status(200);
+            })
+        }else{
+            found_task.status = false;
+            found_task.save(function(err, utask){
+                if (err){
+                    console.log('cannot update task');
+                    return res.err;
+                }
+                console.log(utask.status);
+            return res.status(200);
+            })
+        }
+    })
+}
+
 exports.list_controller_update = function(req, res) {
     res.send('update');
 };
