@@ -49,22 +49,12 @@ sanitizeBody('task').trim().escape(),
 
                             found_list.tasks.push(stask.id);
 
-                            List.update({id: found_list.id},function(err, slist){
+                            found_list.save(function(err, slist){
                                 if(err){
                                     console.log('cannot create list');
                                     return res.redirect('/dashboard/user/'+req.session['username']); //with errors
                                 }
-                                found_user.lists.push(slist.id);
-
-                                found_user.save(function(err, uuser){
-                                    if(err){
-                                        console.log('cannot update user');
-                                        return res.redirect('/dashboard/user/'+req.session['username']); //with errors
-                                    }
-
-                                    console.log('Successfully updated list with task');
-                                    return res.redirect('/dashboard/user/'+req.session['username']);
-                                })
+                                return res.redirect('/dashboard/user/'+req.session['username']);
                             });
                         });
                     }
@@ -106,8 +96,8 @@ sanitizeBody('task').trim().escape(),
                         });
                                    
                     });
-                };
-            })
+                }
+            });
         }
 
 ];
@@ -147,8 +137,35 @@ exports.list_controller_task_update_post = function(req,res) {
     })
 }
 
-exports.list_controller_update = function(req, res) {
-    res.send('update');
+exports.list_controller_delete = function(req, res) {
+    console.log(req.body.listid);
+    var aux= true;
+    var maux= true;
+    var sum = 0;
+    List.finda(req.body.listid)
+    .exec(function(err, found_list){
+        if(err){
+            console.log('cannot delete list');
+            return next(err);
+        }
+         console.log(found_list.tasks.length);
+        do{
+            if(maux){
+            maux=false;
+            Task.findByIdAndRemove(found_list.tasks[sum] , function(err, removed_task){
+                if(err){
+                    console.log('cannot delete task');
+                    return res.next (err);
+                }
+                console.log('task successfully deleted');
+                    sum++;
+                    maux=true;
+            });
+            }
+        }while(sum <= found_list.tasks.length);
+        console.log('List successfully deleted');
+        return res.redirect('/dashboard/user/'+req.session['username']);
+    });
 };
 
 exports.list_controller_show = function(req, res) {

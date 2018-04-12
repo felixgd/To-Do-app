@@ -121,16 +121,17 @@ span.psw {
 	<a href="/dashboard/user/log_out"><button class="btn btn-danger" style="margin-top: 5px; margin-bottom: 5px;"><p style="margin: 5px 5px 10px 10px;">Log Out</p></button></a>
 	</div>
 <div class="container" style="width: 90%;">
+<% if(lists){%>
 	<div class="row" id="Lists" style=" margin-top: 0px; border-top-width: 100px; padding-top: 10%;">
-	<% if(lists){%>
+	
 	<% for(let i = 0; i < lists.length; i++){%>
 		<div class="col-sm-3" style="background-color: rgb(185, 185, 185); border-radius: 1%; margin: 0.2%;">
 		<h3><%=lists[i].listn%></h3>
+		<form action="/list/update" method="post" class="form-inline">
 		<% for(let j = 0; j < lists[i].tasks.length; j++){%>
-				<form action="/list/update" method="post" class="form-inline">
 				<span>
 					<label style="width: 75%" class="form-check-label"><%= lists[i].tasks[j].content%>
-					<% if(!lists[i].tasks[j].status){ %>
+					<% if(lists[i].tasks[j].status){ %>
 					<input type="checkbox" class="pull-right position-static" style="vertical-align:top;" onchange="update(this.id)" id='<%= lists[i].tasks[j].id %>' checked>
 					<% }else{ %>
 					<input type="checkbox" class="pull-right position-static" style="vertical-align:top;" onchange="update(this.id)" id='<%= lists[i].tasks[j].id %>'>
@@ -138,10 +139,11 @@ span.psw {
 					</label>
 				</span>
 		<%}%>
-			<input type="submit" class="btn btn-success pull-right" name="submit" value="Edit" onclick="editlist(<%= lists[i].id %>);" style="margin-bottom: 2%;">
-			<input type="submit" class="btn btn-danger pull-left" name="submit" value="Delete" onclick="deletelist(<%= lists[i].id %>);" style="margin-bottom: 2%;">
+			<input type="submit" class="btn btn-success pull-right" name="submit" value="Edit" onclick="editlist(this.id)" style="margin-bottom: 2%;" id='<%= lists[i].id %>'>
+			<input type="submit" class="btn btn-danger pull-left" name="submit" value="Delete" onclick="deletelist(this.id)" style="margin-bottom: 2%;" id='<%= lists[i].id %>'>
 				</form>
 		</div>
+		
 	<%}%>		
 	</div>
 	<%}%>
@@ -199,7 +201,7 @@ span.psw {
             $.ajax({
 			url: "/list/create",
             type: 'post',
-            timeout: 2000,
+            timeout: 10000,
 			data: data,
             success: function(data) {
                 alert('Success!')
@@ -222,7 +224,7 @@ span.psw {
 		$.ajax({
 			url: "/list/task/update",
             type: 'post',
-            timeout: 3000,
+            timeout: 10000,
 			data: data,
             success: function(data) {
                 alert('Success!')
@@ -238,15 +240,41 @@ span.psw {
 		});
 	}
 
-	function editlist(ilist){
-
-	
+	function editlist(elist){
+		var data= ({
+			listid: elist
+		});
+		$.ajax({
+			url: "/list/task/update",
+            type: 'post',
+            timeout: 10000,
+			data: data,
+            success: function(data) {
+                alert('Success!')
+            },
+            error: function(jqXHR, textStatus, err) {
+				alert('error timeout');
+			}
+		});
 
 	}
 
-	function deletelist(ilist){
-
-
+	function deletelist(dlist){
+		var data= ({
+			listid: dlist
+		});
+		$.ajax({
+			url: "/list/delete",
+            type: 'post',
+            timeout: 10000,
+			data: data,
+            success: function(data) {
+                alert('Success!')
+            },
+            error: function(jqXHR, textStatus, err) {
+				alert('error timeout');
+            }
+		});
 
 	}
 
