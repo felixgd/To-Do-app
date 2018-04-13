@@ -142,7 +142,7 @@ exports.list_controller_delete = function(req, res) {
     var aux= true;
     var maux= true;
     var sum = 0;
-    List.finda(req.body.listid)
+    List.find(req.body.listid)
     .exec(function(err, found_list){
         if(err){
             console.log('cannot delete list');
