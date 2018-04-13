@@ -168,6 +168,6 @@ exports.list_controller_delete = function(req, res) {
     });
 };
 
-exports.list_controller_show = function(req, res) {
+exports.list_controller_edit = function(req, res) {
     res.send('show');
 };
